@@ -1,0 +1,146 @@
+-- SilentZ UI Library
+
+local SilentZUI = {}
+
+function SilentZUI:CreateWindow(titleText)
+    local ScreenGui = Instance.new("ScreenGui")
+    local Bacrnd = Instance.new("Frame")
+    local Title = Instance.new("TextLabel")
+    local Min = Instance.new("TextButton")
+    local TabHolder = Instance.new("Frame")
+    local UIGridLayout = Instance.new("UIGridLayout")
+    local PlateHolder = Instance.new("Frame")
+    local Plate = Instance.new("Frame")
+    local BtnHolder = Instance.new("Frame")
+    local UIGridLayout_2 = Instance.new("UIGridLayout")
+    local Atached = Instance.new("TextLabel")
+
+    ScreenGui.Name = "SilentZ"
+    ScreenGui.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
+    ScreenGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
+
+    -- Main Background
+    Bacrnd.Name = "Bacrnd"
+    Bacrnd.Parent = ScreenGui
+    Bacrnd.BackgroundColor3 = Color3.fromRGB(26, 26, 26)
+    Bacrnd.Position = UDim2.new(0.344, 0, 0.3, 0)
+    Bacrnd.Size = UDim2.new(0, 378, 0, 220)
+
+    local bgCorner = Instance.new("UICorner", Bacrnd)
+
+    -- Title
+    Title.Name = "Title"
+    Title.Parent = Bacrnd
+    Title.BackgroundTransparency = 1
+    Title.Position = UDim2.new(0.021, 0, 0.018, 0)
+    Title.Size = UDim2.new(0, 74, 0, 33)
+    Title.Font = Enum.Font.GothamBold
+    Title.Text = titleText or "SilentZ"
+    Title.TextColor3 = Color3.fromRGB(161, 0, 0)
+    Title.TextScaled = true
+    Title.TextWrapped = true
+
+    -- Attached Label
+    Atached.Name = "Attached"
+    Atached.Parent = Bacrnd
+    Atached.BackgroundTransparency = 1
+    Atached.Position = UDim2.new(0.748, 0, 0.018, 0)
+    Atached.Size = UDim2.new(0, 54, 0, 24)
+    Atached.Font = Enum.Font.Gotham
+    Atached.Text = "Attached!"
+    Atached.TextColor3 = Color3.fromRGB(255, 0, 0)
+    Atached.TextScaled = true
+
+    -- Minimize Button
+    Min.Name = "Min"
+    Min.Parent = Bacrnd
+    Min.BackgroundColor3 = Color3.fromRGB(172, 0, 0)
+    Min.BackgroundTransparency = 0.5
+    Min.Position = UDim2.new(0.941, 0, 0.027, 0)
+    Min.Size = UDim2.new(0, 12, 0, 12)
+    Min.Font = Enum.Font.Gotham
+    Min.Text = "x"
+    Min.TextColor3 = Color3.fromRGB(0, 0, 0)
+    Min.TextScaled = true
+    Instance.new("UICorner", Min)
+
+    -- Toggle Visibility
+    Min.MouseButton1Click:Connect(function()
+        Bacrnd.Visible = not Bacrnd.Visible
+    end)
+
+    -- Tab Holder
+    TabHolder.Name = "TabHolder"
+    TabHolder.Parent = Bacrnd
+    TabHolder.BackgroundTransparency = 1
+    TabHolder.Position = UDim2.new(0.021, 0, 0.2, 0)
+    TabHolder.Size = UDim2.new(0, 74, 0, 160)
+    UIGridLayout.Parent = TabHolder
+    UIGridLayout.CellSize = UDim2.new(0, 74, 0, 25)
+
+    -- Plate Holder
+    PlateHolder.Name = "PlateHolder"
+    PlateHolder.Parent = Bacrnd
+    PlateHolder.BackgroundTransparency = 1
+    PlateHolder.Position = UDim2.new(0.253, 0, 0.15, 0)
+    PlateHolder.Size = UDim2.new(0, 266, 0, 171)
+
+    Plate.Name = "Plate"
+    Plate.Parent = PlateHolder
+    Plate.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+    Plate.Size = UDim2.new(0, 266, 0, 171)
+    Instance.new("UICorner", Plate)
+
+    BtnHolder.Name = "BtnHolder"
+    BtnHolder.Parent = Plate
+    BtnHolder.BackgroundTransparency = 1
+    BtnHolder.Position = UDim2.new(0.045, 0, 0.06, 0)
+    BtnHolder.Size = UDim2.new(0, 136, 0, 145)
+    UIGridLayout_2.Parent = BtnHolder
+    UIGridLayout_2.CellSize = UDim2.new(0, 74, 0, 25)
+
+    -- Library Object
+    local Window = {}
+
+    function Window:CreateTab(tabName)
+        local TabBtn = Instance.new("TextButton")
+        TabBtn.Name = tabName
+        TabBtn.Parent = TabHolder
+        TabBtn.BackgroundColor3 = Color3.fromRGB(31, 31, 31)
+        TabBtn.BackgroundTransparency = 0.5
+        TabBtn.Size = UDim2.new(0, 200, 0, 50)
+        TabBtn.Font = Enum.Font.Gotham
+        TabBtn.Text = tabName
+        TabBtn.TextColor3 = Color3.fromRGB(161, 0, 0)
+        TabBtn.TextScaled = true
+        TabBtn.TextWrapped = true
+        Instance.new("UICorner", TabBtn)
+
+        local Tab = {}
+
+        function Tab:CreateButton(btnName, callback)
+            local Button = Instance.new("TextButton")
+            Button.Name = btnName
+            Button.Parent = BtnHolder
+            Button.BackgroundColor3 = Color3.fromRGB(31, 31, 31)
+            Button.BackgroundTransparency = 0.5
+            Button.Size = UDim2.new(0, 200, 0, 50)
+            Button.Font = Enum.Font.Gotham
+            Button.Text = btnName
+            Button.TextColor3 = Color3.fromRGB(161, 0, 0)
+            Button.TextScaled = true
+            Button.TextWrapped = true
+            Instance.new("UICorner", Button)
+
+            Button.MouseButton1Click:Connect(function()
+                pcall(callback)
+            end)
+        end
+
+        return Tab
+    end
+
+    return Window
+end
+
+return SilentZUI
