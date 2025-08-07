@@ -1,0 +1,243 @@
+local SilentZUI = {}
+
+function SilentZUI:CreateWindow(titleText)
+	local ScreenGui = Instance.new("ScreenGui", game:GetService("Players").LocalPlayer:WaitForChild("PlayerGui"))
+	ScreenGui.Name = "SilentZ"
+	ScreenGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
+
+	local MainFrame = Instance.new("Frame", ScreenGui)
+	MainFrame.Name = "Bacrnd"
+	MainFrame.Size = UDim2.new(0, 378, 0, 220)
+	MainFrame.Position = UDim2.new(0.34483, 0, 0.29975, 0)
+	MainFrame.BackgroundColor3 = Color3.fromRGB(27, 27, 27)
+	MainFrame.BorderSizePixel = 0
+
+	Instance.new("UICorner", MainFrame)
+
+	local Title = Instance.new("TextLabel", MainFrame)
+	Title.Text = titleText or "SilentZ"
+	Title.TextScaled = true
+	Title.TextColor3 = Color3.fromRGB(162, 0, 0)
+	Title.Size = UDim2.new(0, 80, 0, 33)
+	Title.Position = UDim2.new(0.02116, 0, 0.01818, 0)
+	Title.BackgroundTransparency = 1
+	Title.FontFace = Font.new("rbxasset://fonts/families/AmaticSC.json", Enum.FontWeight.Bold, Enum.FontStyle.Normal)
+
+	local Attached = Instance.new("TextLabel", MainFrame)
+	Attached.Name = "Attached"
+	Attached.Text = "Attaching..."
+	Attached.TextScaled = true
+	Attached.Size = UDim2.new(0, 54, 0, 24)
+	Attached.Position = UDim2.new(0.74868, 0, 0.01818, 0)
+	Attached.BackgroundTransparency = 1
+	Attached.FontFace = Font.new("rbxasset://fonts/families/AmaticSC.json", Enum.FontWeight.Light, Enum.FontStyle.Normal)
+	Attached.TextColor3 = Color3.fromRGB(255, 0, 0)
+
+	local stroke = Instance.new("UIStroke", Attached)
+	stroke.Thickness = 1.2
+
+	task.delay(2, function()
+		Attached.Text = "Attached!"
+	end)
+
+	local BackgroundImg = Instance.new("ImageLabel", MainFrame)
+	BackgroundImg.Name = "BackroundIMg"
+	BackgroundImg.Image = "rbxassetid://75085931222373"
+	BackgroundImg.Size = UDim2.new(0, 378, 0, 220)
+	BackgroundImg.BackgroundTransparency = 1
+
+	local TabHolder = Instance.new("Frame", BackgroundImg)
+	TabHolder.Name = "TabHolder"
+	TabHolder.Size = UDim2.new(0, 80, 0, 160)
+	TabHolder.Position = UDim2.new(0.02116, 0, 0.2, 0)
+	TabHolder.BackgroundTransparency = 1
+
+	local grid = Instance.new("UIGridLayout", TabHolder)
+	grid.CellSize = UDim2.new(0, 80, 0, 25)
+	grid.SortOrder = Enum.SortOrder.LayoutOrder
+
+	local PlateHolder = Instance.new("Frame", BackgroundImg)
+	PlateHolder.Name = "PlateHolder"
+	PlateHolder.Size = UDim2.new(0, 266, 0, 171)
+	PlateHolder.Position = UDim2.new(0.25397, 0, 0.15, 0)
+	PlateHolder.BackgroundTransparency = 1
+
+	return {
+		GUI = ScreenGui,
+		Main = MainFrame,
+		TabHolder = TabHolder,
+		PlateHolder = PlateHolder
+	}
+end
+
+function SilentZUI:AddTab(window, tabName)
+	local Tab = Instance.new("TextButton", window.TabHolder)
+	Tab.Text = tabName
+	Tab.Name = tabName
+	Tab.BackgroundColor3 = Color3.fromRGB(32, 32, 32)
+	Tab.BackgroundTransparency = 0.5
+	Tab.TextScaled = true
+	Tab.TextColor3 = Color3.fromRGB(162, 0, 0)
+	Tab.FontFace = Font.new("rbxasset://fonts/families/AmaticSC.json", Enum.FontWeight.Bold, Enum.FontStyle.Italic)
+
+	local UIStroke = Instance.new("UIStroke", Tab)
+	UIStroke.Color = Color3.fromRGB(162, 0, 0)
+	UIStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+
+	local UICorner = Instance.new("UICorner", Tab)
+
+	local Plate = Instance.new("Frame", window.PlateHolder)
+	Plate.Name = tabName .. "_Plate"
+	Plate.Visible = false
+	Plate.Size = UDim2.new(0, 266, 0, 171)
+	Plate.BackgroundColor3 = Color3.fromRGB(31, 31, 31)
+	Plate.BackgroundTransparency = 0.3
+
+	local Stroke = Instance.new("UIStroke", Plate)
+	Stroke.Color = Color3.fromRGB(162, 0, 0)
+
+	local Corner = Instance.new("UICorner", Plate)
+
+	-- Holders
+	local BtnHolder = Instance.new("Frame", Plate)
+	BtnHolder.Name = "BtnHolder"
+	BtnHolder.Size = UDim2.new(0, 136, 0, 145)
+	BtnHolder.Position = UDim2.new(0.045, 0, 0.064, 0)
+	BtnHolder.BackgroundTransparency = 1
+
+	local SliderHolder = Instance.new("Frame", Plate)
+	SliderHolder.Name = "SliderHolder"
+	SliderHolder.Size = UDim2.new(0, 100, 0, 100)
+	SliderHolder.Position = UDim2.new(0.6015, 0, 0.06433, 0)
+	SliderHolder.BackgroundTransparency = 1
+
+	local ToggleHolder = Instance.new("Frame", Plate)
+	ToggleHolder.Name = "ToggleHolder"
+	ToggleHolder.Size = UDim2.new(0, 100, 0, 45)
+	ToggleHolder.Position = UDim2.new(0.6015, 0, 0.69006, 0)
+	ToggleHolder.BackgroundTransparency = 1
+
+	local btnLayout = Instance.new("UIGridLayout", BtnHolder)
+	btnLayout.CellSize = UDim2.new(0, 74, 0, 25)
+
+	local sliderLayout = Instance.new("UIGridLayout", SliderHolder)
+	sliderLayout.CellSize = UDim2.new(0, 100, 0, 35)
+
+	local toggleLayout = Instance.new("UIGridLayout", ToggleHolder)
+	toggleLayout.CellSize = UDim2.new(0, 100, 0, 20)
+
+	-- Tab Switching
+	Tab.MouseButton1Click:Connect(function()
+		for _, v in ipairs(window.PlateHolder:GetChildren()) do
+			if v:IsA("Frame") then v.Visible = false end
+		end
+		Plate.Visible = true
+	end)
+
+	return {
+		BtnHolder = BtnHolder,
+		SliderHolder = SliderHolder,
+		ToggleHolder = ToggleHolder
+	}
+end
+
+function SilentZUI:AddButton(tab, text, callback)
+	local btn = Instance.new("TextButton", tab.BtnHolder)
+	btn.Text = text
+	btn.TextScaled = true
+	btn.BackgroundColor3 = Color3.fromRGB(32, 32, 32)
+	btn.BackgroundTransparency = 0.5
+	btn.TextColor3 = Color3.fromRGB(162, 0, 0)
+	btn.FontFace = Font.new("rbxasset://fonts/families/AmaticSC.json", Enum.FontWeight.Bold, Enum.FontStyle.Italic)
+
+	Instance.new("UICorner", btn)
+	local stroke = Instance.new("UIStroke", btn)
+	stroke.Color = Color3.fromRGB(162, 0, 0)
+	stroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+
+	btn.MouseButton1Click:Connect(callback)
+end
+
+function SilentZUI:AddToggle(tab, text, callback)
+	local ToggleFrame = Instance.new("Frame", tab.ToggleHolder)
+	ToggleFrame.Size = UDim2.new(0, 73, 0, 25)
+	ToggleFrame.BackgroundTransparency = 1
+
+	local ToggleBtn = Instance.new("TextButton", ToggleFrame)
+	ToggleBtn.Size = UDim2.new(0, 18, 0, 18)
+	ToggleBtn.Position = UDim2.new(0.01, 0, 0.04, 0)
+	ToggleBtn.BackgroundColor3 = Color3.fromRGB(162, 0, 0)
+	ToggleBtn.BackgroundTransparency = 0.15
+	ToggleBtn.Text = ""
+	ToggleBtn.Name = "ToggleBtn"
+
+	Instance.new("UICorner", ToggleBtn)
+	Instance.new("UIStroke", ToggleBtn)
+
+	local ToggleName = Instance.new("TextLabel", ToggleBtn)
+	ToggleName.Text = text
+	ToggleName.Size = UDim2.new(0, 78, 0, 19)
+	ToggleName.Position = UDim2.new(1, 0, 0, 0)
+	ToggleName.TextColor3 = Color3.fromRGB(162, 0, 0)
+	ToggleName.BackgroundTransparency = 1
+	ToggleName.TextScaled = true
+	ToggleName.FontFace = Font.new("rbxasset://fonts/families/AmaticSC.json", Enum.FontWeight.Bold, Enum.FontStyle.Italic)
+
+	local on = false
+	ToggleBtn.MouseButton1Click:Connect(function()
+		on = not on
+		callback(on)
+	end)
+end
+
+function SilentZUI:AddSlider(tab, text, min, max, callback)
+	local SliderFrame = Instance.new("Frame", tab.SliderHolder)
+	SliderFrame.Size = UDim2.new(0, 100, 0, 30)
+	SliderFrame.BackgroundTransparency = 1
+
+	local Label = Instance.new("TextLabel", SliderFrame)
+	Label.Text = text
+	Label.Size = UDim2.new(0, 100, 0, 16)
+	Label.BackgroundTransparency = 1
+	Label.TextColor3 = Color3.fromRGB(162, 0, 0)
+	Label.TextScaled = true
+	Label.FontFace = Font.new("rbxasset://fonts/families/AmaticSC.json", Enum.FontWeight.Bold, Enum.FontStyle.Italic)
+
+	local Bar = Instance.new("Frame", SliderFrame)
+	Bar.Size = UDim2.new(0, 87, 0, 9)
+	Bar.Position = UDim2.new(0.07, 0, 0.53333, 0)
+	Bar.BackgroundColor3 = Color3.fromRGB(43, 43, 43)
+
+	local Fill = Instance.new("Frame", Bar)
+	Fill.Size = UDim2.new(0, 8, 0, 9)
+	Fill.BackgroundColor3 = Color3.fromRGB(162, 0, 0)
+
+	local UICorner = Instance.new("UICorner", Bar)
+	local FillCorner = Instance.new("UICorner", Fill)
+
+	local dragging = false
+
+	Bar.InputBegan:Connect(function(input)
+		if input.UserInputType == Enum.UserInputType.MouseButton1 then
+			dragging = true
+		end
+	end)
+
+	game:GetService("UserInputService").InputEnded:Connect(function(input)
+		if input.UserInputType == Enum.UserInputType.MouseButton1 then
+			dragging = false
+		end
+	end)
+
+	game:GetService("RunService").RenderStepped:Connect(function()
+		if dragging then
+			local mouse = game:GetService("UserInputService"):GetMouseLocation().X
+			local rel = math.clamp(mouse - Bar.AbsolutePosition.X, 0, Bar.AbsoluteSize.X)
+			local value = math.floor(((rel / Bar.AbsoluteSize.X) * (max - min) + min) + 0.5)
+			Fill.Size = UDim2.new(0, rel, 0, 9)
+			callback(value)
+		end
+	end)
+end
+
+return SilentZUI
