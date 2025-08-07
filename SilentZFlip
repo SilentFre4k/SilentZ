@@ -1,7 +1,13 @@
 local SilentZUI = {}
 
+-- Services
+local UIS = game:GetService("UserInputService")
+local Players = game:GetService("Players")
+local RS = game:GetService("RunService")
+
+--// Create Window
 function SilentZUI:CreateWindow(titleText)
-	local ScreenGui = Instance.new("ScreenGui", game:GetService("Players").LocalPlayer:WaitForChild("PlayerGui"))
+	local ScreenGui = Instance.new("ScreenGui", Players.LocalPlayer:WaitForChild("PlayerGui"))
 	ScreenGui.Name = "SilentZ"
 	ScreenGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
 
@@ -11,7 +17,6 @@ function SilentZUI:CreateWindow(titleText)
 	MainFrame.Position = UDim2.new(0.34483, 0, 0.29975, 0)
 	MainFrame.BackgroundColor3 = Color3.fromRGB(27, 27, 27)
 	MainFrame.BorderSizePixel = 0
-
 	Instance.new("UICorner", MainFrame)
 
 	local Title = Instance.new("TextLabel", MainFrame)
@@ -32,14 +37,70 @@ function SilentZUI:CreateWindow(titleText)
 	Attached.BackgroundTransparency = 1
 	Attached.FontFace = Font.new("rbxasset://fonts/families/AmaticSC.json", Enum.FontWeight.Light, Enum.FontStyle.Normal)
 	Attached.TextColor3 = Color3.fromRGB(255, 0, 0)
-
 	local stroke = Instance.new("UIStroke", Attached)
 	stroke.Thickness = 1.2
-
 	task.delay(2, function()
-		Attached.TextColor = Color3.new(0,255,0)
+		Attached.Text = "Attached!"
+		Attached.TextColor3 = Color3.fromRGB(0, 255, 0)
 	end)
 
+	-- Minimize Button
+	local Min = Instance.new("TextButton", MainFrame)
+	Min.Name = "Min"
+	Min.Text = "-"
+	Min.Size = UDim2.new(0, 12, 0, 12)
+	Min.Position = UDim2.new(0.9418, 0, 0.02727, 0)
+	Min.BackgroundColor3 = Color3.fromRGB(173, 0, 0)
+	Min.TextColor3 = Color3.fromRGB(0, 0, 0)
+	Min.FontFace = Font.new("rbxasset://fonts/families/AmaticSC.json", Enum.FontWeight.Bold, Enum.FontStyle.Italic)
+	Min.BackgroundTransparency = 0.5
+	Min.TextScaled = true
+	Min.BorderSizePixel = 0
+	Instance.new("UICorner", Min)
+	local minStroke = Instance.new("UIStroke", Min)
+	minStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+	minStroke.Thickness = 1.2
+
+	local visible = true
+	Min.MouseButton1Click:Connect(function()
+		visible = not visible
+		for _, v in pairs(MainFrame:GetChildren()) do
+			if v:IsA("Frame") or v:IsA("TextLabel") then
+				if v.Name ~= "Min" then
+					v.Visible = visible
+				end
+			end
+		end
+	end)
+
+	-- Dragging
+	local dragging, offset
+	MainFrame.InputBegan:Connect(function(input)
+		if input.UserInputType == Enum.UserInputType.MouseButton1 then
+			dragging = true
+			offset = input.Position - MainFrame.Position
+		end
+	end)
+
+	UIS.InputEnded:Connect(function(input)
+		if input.UserInputType == Enum.UserInputType.MouseButton1 then dragging = false end
+	end)
+
+	RS.RenderStepped:Connect(function()
+		if dragging then
+			MainFrame.Position = UDim2.new(0, UIS:GetMouseLocation().X - offset.X, 0, UIS:GetMouseLocation().Y - offset.Y - 36)
+		end
+	end)
+
+	-- Toggle show/hide with K
+	UIS.InputBegan:Connect(function(input, gpe)
+		if gpe then return end
+		if input.KeyCode == Enum.KeyCode.K then
+			MainFrame.Visible = not MainFrame.Visible
+		end
+	end)
+
+	-- UI Content
 	local BackgroundImg = Instance.new("ImageLabel", MainFrame)
 	BackgroundImg.Name = "BackroundIMg"
 	BackgroundImg.Image = "rbxassetid://75085931222373"
@@ -52,7 +113,6 @@ function SilentZUI:CreateWindow(titleText)
 	TabHolder.Size = UDim2.new(0, 80, 0, 160)
 	TabHolder.Position = UDim2.new(0.02116, 0, 0.2, 0)
 	TabHolder.BackgroundTransparency = 1
-
 	local grid = Instance.new("UIGridLayout", TabHolder)
 	grid.CellSize = UDim2.new(0, 80, 0, 25)
 	grid.SortOrder = Enum.SortOrder.LayoutOrder
