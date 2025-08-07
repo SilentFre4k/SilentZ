@@ -1,0 +1,96 @@
+local SilentZUI = {}
+SilentZUI.__index = SilentZUI
+
+function SilentZUI:Create(rootGui)
+	local self = setmetatable({}, SilentZUI)
+	
+	self.GUI = rootGui
+	self.TabHolder = rootGui.Bacrnd.BackroundIMg.TabHolder
+	self.Plate = rootGui.Bacrnd.BackroundIMg.PlateHolder.Plate
+	self.BtnHolder = self.Plate.BtnHolder
+	self.ToggleHolder = self.Plate.ToggleHolder
+	self.SliderHolder = self.Plate.SliderHolder
+
+	return self
+end
+
+function SilentZUI:AddTab(tabName, callback)
+	local tab = self.TabHolder.Tab:Clone()
+	tab.Text = tabName
+	tab.Visible = true
+	tab.Parent = self.TabHolder
+
+	tab.MouseButton1Click:Connect(function()
+		if callback then callback(tabName) end
+	end)
+end
+
+function SilentZUI:AddButton(name, callback)
+	local button = self.BtnHolder.Button:Clone()
+	button.Text = name
+	button.Visible = true
+	button.Parent = self.BtnHolder
+
+	button.MouseButton1Click:Connect(function()
+		if callback then callback() end
+	end)
+end
+
+function SilentZUI:AddToggle(name, default, callback)
+	local toggleFrame = self.ToggleHolder.Toggle:Clone()
+	local toggleBtn = toggleFrame.ToggleBtn
+	local toggleLabel = toggleBtn.ToggleName
+
+	toggleLabel.Text = name
+	toggleFrame.Parent = self.ToggleHolder
+	toggleFrame.Visible = true
+
+	local state = default or false
+	toggleBtn.BackgroundColor3 = state and Color3.fromRGB(0, 162, 0) or Color3.fromRGB(162, 0, 0)
+
+	toggleBtn.MouseButton1Click:Connect(function()
+		state = not state
+		toggleBtn.BackgroundColor3 = state and Color3.fromRGB(0, 162, 0) or Color3.fromRGB(162, 0, 0)
+		if callback then callback(state) end
+	end)
+end
+
+function SilentZUI:AddSlider(name, min, max, default, callback)
+	local slider = self.SliderHolder.Slider:Clone()
+	slider.Slider.Text = name
+	slider.Parent = self.SliderHolder
+	slider.Visible = true
+
+	local bar = slider.SliderBackrd
+	local knob = slider.SliderSlide
+
+	local dragging = false
+	local value = default or min
+
+	local function updatePosition(x)
+		local relative = math.clamp((x - bar.AbsolutePosition.X) / bar.AbsoluteSize.X, 0, 1)
+		knob.Position = UDim2.new(relative, 0, knob.Position.Y.Scale, knob.Position.Y.Offset)
+		value = math.floor((min + (max - min) * relative) + 0.5)
+		if callback then callback(value) end
+	end
+
+	knob.InputBegan:Connect(function(input)
+		if input.UserInputType == Enum.UserInputType.MouseButton1 then
+			dragging = true
+		end
+	end)
+
+	game:GetService("UserInputService").InputEnded:Connect(function(input)
+		if input.UserInputType == Enum.UserInputType.MouseButton1 then
+			dragging = false
+		end
+	end)
+
+	game:GetService("RunService").RenderStepped:Connect(function()
+		if dragging then
+			updatePosition(game:GetService("UserInputService"):GetMouseLocation().X)
+		end
+	end)
+end
+
+return SilentZUI
