@@ -74,12 +74,7 @@ function SilentZUI:CreateWindow(titleText)
 	-- Minimize Functionality
 	local isMinimized = false
 	Min.MouseButton1Click:Connect(function()
-		isMinimized = not isMinimized
-		for _, child in pairs(MainFrame:GetChildren()) do
-			if child:IsA("GuiObject") and child.Name ~= "Min" and child.Name ~= "Title" and child.Name ~= "Attached" then
-				child.Visible = not isMinimized
-			end
-		end
+		MainFrame:Destory()
 	end)
 
 	-- Dragging
