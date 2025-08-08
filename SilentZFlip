@@ -7,11 +7,12 @@ local RS = game:GetService("RunService")
 
 --// Create Window
 function SilentZUI:CreateWindow(titleText)
-	local ScreenGui = Instance.new("CoreGui", Players.LocalPlayer:WaitForChild("PlayerGui"))
+	local ScreenGui = Instance.new("ScreenGui")
 	ScreenGui.Name = "SilentZ"
 	ScreenGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
+	ScreenGui.Parent = game:GetService("CoreGui")
 
-	local MainFrame = Instance.new("Frame", CoreGui)
+	local MainFrame = Instance.new("Frame", ScreenGui)
 	MainFrame.Name = "Bacrnd"
 	MainFrame.Size = UDim2.new(0, 378, 0, 220)
 	MainFrame.Position = UDim2.new(0.34483, 0, 0.29975, 0)
@@ -64,11 +65,11 @@ function SilentZUI:CreateWindow(titleText)
 	local visible = true
 	Min.MouseButton1Click:Connect(function()
 		visible = not visible
-		for _, v in pairs(MainFrame:GetChildren()) do
-			if v:IsA("Frame") or v:IsA("TextLabel") then
-				if v.Name ~= "Min" then
-					v.Visible = visible
-				end
+	
+		for _, descendant in pairs(MainFrame:GetDescendants()) do
+			-- Don't hide the Minimize button or the main frame itself
+			if descendant:IsA("GuiObject") and descendant ~= Min and descendant ~= MainFrame then
+				descendant.Visible = visible
 			end
 		end
 	end)
