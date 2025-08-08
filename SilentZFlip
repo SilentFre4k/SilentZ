@@ -7,6 +7,7 @@ local RS = game:GetService("RunService")
 
 --// Create Window
 function SilentZUI:CreateWindow(titleText)
+	local UIS = game:GetService("UserInputService")
 	local ScreenGui = Instance.new("ScreenGui")
 	ScreenGui.Name = "SilentZ"
 	ScreenGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
@@ -45,7 +46,7 @@ function SilentZUI:CreateWindow(titleText)
 		Attached.TextColor3 = Color3.fromRGB(0, 255, 0)
 	end)
 
-	-- Minimize Button
+	-- Minimize Button (Toggles Full UI)
 	local Min = Instance.new("TextButton", MainFrame)
 	Min.Name = "Min"
 	Min.Text = "-"
@@ -62,53 +63,48 @@ function SilentZUI:CreateWindow(titleText)
 	minStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
 	minStroke.Thickness = 1.2
 
-	local visible = true
-	Min.MouseButton1Click:Connect(function()
-		visible = not visible
-	
-		for _, child in pairs(MainFrame:GetChildren()) do
-			if child:IsA("GuiObject") and child.Name ~= "Min" and child.Name ~= "Title" and child.Name ~= "Attached" then
-				child.Visible = visible
-			end
-		end
-	end)
-
-
-	-- Dragging
-	-- Drag logic
-local dragging, dragInput, dragStart, startPos
-
-local function updateDrag(input)
-	local delta = input.Position - dragStart
-	MainFrame.Position = UDim2.new(0, startPos.X + delta.X, 0, startPos.Y + delta.Y)
-end
-
-Title.InputBegan:Connect(function(input)
-	if input.UserInputType == Enum.UserInputType.MouseButton1 then
-		dragging = true
-		dragStart = input.Position
-		startPos = MainFrame.Position
-
-		input.Changed:Connect(function()
-			if input.UserInputState == Enum.UserInputState.End then
-				dragging = false
-			end
-		end)
-	end
-end)
-
-UIS.InputChanged:Connect(function(input)
-	if dragging and input.UserInputType == Enum.UserInputType.MouseMovement then
-		updateDrag(input)
-	end
-end)
-
-
-	-- Toggle show/hide with K
+	-- Hide the full GUI (K Key)
 	UIS.InputBegan:Connect(function(input, gpe)
 		if gpe then return end
 		if input.KeyCode == Enum.KeyCode.K then
 			MainFrame.Visible = not MainFrame.Visible
+		end
+	end)
+
+	-- Minimize Functionality
+	local isMinimized = false
+	Min.MouseButton1Click:Connect(function()
+		isMinimized = not isMinimized
+		for _, child in pairs(MainFrame:GetChildren()) do
+			if child:IsA("GuiObject") and child.Name ~= "Min" and child.Name ~= "Title" and child.Name ~= "Attached" then
+				child.Visible = not isMinimized
+			end
+		end
+	end)
+
+	-- Dragging
+	local dragging, dragStart, startPos
+
+	Title.InputBegan:Connect(function(input)
+		if input.UserInputType == Enum.UserInputType.MouseButton1 then
+			dragging = true
+			dragStart = input.Position
+			startPos = MainFrame.Position
+
+			local connection
+			connection = input.Changed:Connect(function()
+				if input.UserInputState == Enum.UserInputState.End then
+					dragging = false
+					connection:Disconnect()
+				end
+			end)
+		end
+	end)
+
+	UIS.InputChanged:Connect(function(input)
+		if dragging and input.UserInputType == Enum.UserInputType.MouseMovement then
+			local delta = input.Position - dragStart
+			MainFrame.Position = UDim2.new(0, startPos.X.Offset + delta.X, 0, startPos.Y.Offset + delta.Y)
 		end
 	end)
 
@@ -142,6 +138,7 @@ end)
 		PlateHolder = PlateHolder
 	}
 end
+
 
 function SilentZUI:AddTab(window, tabName)
 	local Tab = Instance.new("TextButton", window.TabHolder)
