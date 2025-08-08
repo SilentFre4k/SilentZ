@@ -66,32 +66,43 @@ function SilentZUI:CreateWindow(titleText)
 	Min.MouseButton1Click:Connect(function()
 		visible = not visible
 	
-		for _, descendant in pairs(MainFrame:GetDescendants()) do
-			-- Don't hide the Minimize button or the main frame itself
-			if descendant:IsA("GuiObject") and descendant ~= Min and descendant ~= MainFrame then
-				descendant.Visible = visible
+		for _, child in pairs(MainFrame:GetChildren()) do
+			if child:IsA("GuiObject") and child.Name ~= "Min" and child.Name ~= "Title" and child.Name ~= "Attached" then
+				child.Visible = visible
 			end
 		end
 	end)
 
+
 	-- Dragging
-	local dragging, offset
-	MainFrame.InputBegan:Connect(function(input)
-		if input.UserInputType == Enum.UserInputType.MouseButton1 then
-			dragging = true
-			offset = input.Position - MainFrame.Position
-		end
-	end)
+	-- Drag logic
+local dragging, dragInput, dragStart, startPos
 
-	UIS.InputEnded:Connect(function(input)
-		if input.UserInputType == Enum.UserInputType.MouseButton1 then dragging = false end
-	end)
+local function updateDrag(input)
+	local delta = input.Position - dragStart
+	MainFrame.Position = UDim2.new(0, startPos.X + delta.X, 0, startPos.Y + delta.Y)
+end
 
-	RS.RenderStepped:Connect(function()
-		if dragging then
-			MainFrame.Position = UDim2.new(0, UIS:GetMouseLocation().X - offset.X, 0, UIS:GetMouseLocation().Y - offset.Y - 36)
-		end
-	end)
+Title.InputBegan:Connect(function(input)
+	if input.UserInputType == Enum.UserInputType.MouseButton1 then
+		dragging = true
+		dragStart = input.Position
+		startPos = MainFrame.Position
+
+		input.Changed:Connect(function()
+			if input.UserInputState == Enum.UserInputState.End then
+				dragging = false
+			end
+		end)
+	end
+end)
+
+UIS.InputChanged:Connect(function(input)
+	if dragging and input.UserInputType == Enum.UserInputType.MouseMovement then
+		updateDrag(input)
+	end
+end)
+
 
 	-- Toggle show/hide with K
 	UIS.InputBegan:Connect(function(input, gpe)
