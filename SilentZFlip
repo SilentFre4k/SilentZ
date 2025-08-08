@@ -7,11 +7,11 @@ local RS = game:GetService("RunService")
 
 --// Create Window
 function SilentZUI:CreateWindow(titleText)
-	local ScreenGui = Instance.new("ScreenGui", Players.LocalPlayer:WaitForChild("PlayerGui"))
+	local ScreenGui = Instance.new("CoreGui", Players.LocalPlayer:WaitForChild("PlayerGui"))
 	ScreenGui.Name = "SilentZ"
 	ScreenGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
 
-	local MainFrame = Instance.new("Frame", ScreenGui)
+	local MainFrame = Instance.new("Frame", CoreGui)
 	MainFrame.Name = "Bacrnd"
 	MainFrame.Size = UDim2.new(0, 378, 0, 220)
 	MainFrame.Position = UDim2.new(0.34483, 0, 0.29975, 0)
