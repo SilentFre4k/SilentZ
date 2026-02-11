@@ -146,5 +146,5 @@ END OF FILE
 ========================================
 
 
-execute at @a[tag=pinktrail] run particle minecraft:dust 1 0.5 0.8 1 ~ ~1 ~ 0.3 0.3 0.3 0.05 5
-execute at @a[tag=pinktrail] run particle minecraft:dust 1 0.4 0.7 1 ~ ~1 ~ 0.25 0.25 0.25 0.05 8
+execute at @a[tag=pinktrail] run particle minecraft:flame ~ ~1 ~ 0.3 0.3 0.3 0 5
+
