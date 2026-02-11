@@ -1,6 +1,7 @@
 ========================================
-MINECRAFT BEDROCK XBOX SHOP COMMAND SYSTEM
-VERSION: 1.21+ / BEDROCK
+MINECRAFT BEDROCK XBOX SHOP SYSTEM
+VERSION: 1.21+
+THEME: PINK / FIRE / MODDED ARMOR
 AUTHOR: Custom Xbox Shop
 ========================================
 
@@ -8,80 +9,95 @@ AUTHOR: Custom Xbox Shop
 ONE TIME SETUP (RUN ONCE)
 -------------------------
 
-# Create money, kills, and random scoreboards
+# Create scoreboards
 scoreboard objectives add money dummy
 scoreboard objectives add kills playerKillCount
 scoreboard objectives add random dummy
 
+# Optional: For visual effects only
+# Enable tags for players who buy items
+# (Tags: fireblade, dash, flame, heart, pinkarmor)
+
 ========================================
 SHOP: FIRE BLADE
-ITEM NAME: Fire Blade
 ITEM: Diamond Sword
+TAG: fireblade
+EFFECT: Damage nearby players on hit
 ========================================
 
-# Repeating Command Block
-# Type: Repeating
-# Setting: Always Active
-execute as @a[hasitem={item=diamond_sword,location=slot.weapon.mainhand,name="Fire Blade"}] at @s run execute as @a[distance=..3,name=!@s] run damage @s 2 fire
+# Buy Button Command
+tag @p add fireblade
+
+# Repeating Command Block (Always Active)
+execute as @a[tag=fireblade] at @s run execute as @a[distance=..3,tag=!fireblade] run damage @s 2 fire
 
 ========================================
 SHOP: DASH FEATHER
-ITEM NAME: Dash
 ITEM: Feather
+TAG: dash
+EFFECT: Speed boost
 ========================================
 
-# Repeating Command Block
-# Type: Repeating
-# Setting: Always Active
-effect @a[hasitem={item=feather,name="Dash"}] speed 2 4 true
+# Buy Button Command
+tag @p add dash
+
+# Repeating Command Block (Always Active)
+effect @a[tag=dash] speed 2 4 true
 
 ========================================
 SHOP: FLAME TRAIL
+ITEM: Particle Trail
+TAG: flame
 ========================================
 
 # Buy Button Command
-# Runs once when pressed
 tag @p add flame
 
-# Repeating Command Block
-# Type: Repeating
-# Setting: Always Active
-execute as @a[tag=flame] at @s run particle minecraft:basic_flame_particle ~ ~ ~ 
+# Repeating Command Block (Always Active)
+execute at @a[tag=flame] run particle minecraft:basic_flame_particle ~ ~ ~
 
 ========================================
 SHOP: HEART TRAIL
+ITEM: Particle Trail
+TAG: heart
 ========================================
 
 # Buy Button Command
-# Runs once when pressed
 tag @p add heart
 
-# Repeating Command Block
-# Type: Repeating
-# Setting: Always Active
-execute as @a[tag=heart] at @s run particle minecraft:heart_particle ~ ~1 ~
+# Repeating Command Block (Always Active)
+execute at @a[tag=heart] run particle minecraft:heart_particle ~ ~1 ~
+
+========================================
+SHOP: PINK TRAIL
+ITEM: Particle Trail
+TAG: pinktrail
+========================================
+
+# Buy Button Command
+tag @p add pinktrail
+
+# Repeating Command Block (Always Active)
+execute at @a[tag=pinktrail] run particle minecraft:end_rod ~ ~ ~ 0.5 0.5 0.5 0.01 5
 
 ========================================
 SHOP: KILL LIGHTNING EFFECT
+TAG: lightningkill
 ========================================
 
-# Repeating Command Block
-# Type: Repeating
-# Setting: Always Active
+# Repeating Command Block (Always Active)
 execute as @a[scores={kills=1..}] at @s run summon lightning_bolt ~ ~ ~
 
-# Chain Command Block
-# Type: Chain
-# Setting: Always Active
+# Chain Command Block (Always Active)
 scoreboard players set @a[scores={kills=1..}] kills 0
 
 ========================================
 SHOP: MYSTERY CRATE
+ITEM: Random loot
 ========================================
 
 # Mystery Crate Button Command
-# Runs once when pressed
-scoreboard players random @p random 1 5
+scoreboard players random @p random 1 6
 
 # Chain Commands (Always Active)
 execute as @p[scores={random=1}] run give @s diamond 3
@@ -89,16 +105,37 @@ execute as @p[scores={random=2}] run give @s totem_of_undying 1
 execute as @p[scores={random=3}] run scoreboard players add @s money 300
 execute as @p[scores={random=4}] run give @s diamond_sword
 execute as @p[scores={random=5}] run tellraw @s {"rawtext":[{"text":"Unlucky lol"}]}
-
-# Reset random
+execute as @p[scores={random=6}] run give @s netherite_chestplate 1
 scoreboard players set @p random 0
+
+========================================
+SHOP: PINK MODDED ARMOR SET
+ITEM: Netherite Armor
+TAG: pinkarmor
+BONUS: Extra fire protection, resistance
+========================================
+
+# Buy Button Command
+tag @p add pinkarmor
+
+# Give Pink Armor with high protection (manual rename in anvil if needed)
+give @p netherite_helmet 1 0 {"minecraft:display_name":"Pink Helmet"}
+give @p netherite_chestplate 1 0 {"minecraft:display_name":"Pink Chestplate"}
+give @p netherite_leggings 1 0 {"minecraft:display_name":"Pink Leggings"}
+give @p netherite_boots 1 0 {"minecraft:display_name":"Pink Boots"}
+
+# Repeating Command Block (Always Active)
+# Adds fire resistance and resistance effects to Pink Armor wearers
+effect @a[tag=pinkarmor] fire_resistance 2 1 true
+effect @a[tag=pinkarmor] resistance 2 1 true
+effect @a[tag=pinkarmor] absorption 2 1 true
 
 ========================================
 SHOP: SIMPLE MONEY CHECK EXAMPLE
 ITEM COST: 300
 ========================================
 
-# Buy Button Command
+# Button Block
 execute as @p[scores={money=300..}] run give @s totem_of_undying 1
 
 # Chain Command Block
