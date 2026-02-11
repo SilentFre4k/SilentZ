@@ -1,0 +1,133 @@
+========================================
+MINECRAFT BEDROCK XBOX SHOP COMMAND LIST
+========================================
+
+-------------------------
+ONE TIME SETUP (RUN ONCE)
+-------------------------
+
+scoreboard objectives add money dummy
+scoreboard objectives add kills playerKillCount
+scoreboard objectives add random dummy
+
+
+========================================
+SHOP: FIRE BLADE
+ITEM NAME: Fire Blade
+ITEM: Diamond Sword
+========================================
+
+BLOCK TYPE: Repeating
+SETTING: Always Active
+
+execute as @a[hasitem={item=diamond_sword,location=slot.weapon.mainhand,name=Fire Blade}] at @s run effect @e[type=player,r=3,name=!@s] fire 3 1
+
+
+========================================
+SHOP: DASH FEATHER
+ITEM NAME: Dash
+ITEM: Feather
+========================================
+
+BLOCK TYPE: Repeating
+SETTING: Always Active
+
+effect @a[hasitem={item=feather,name=Dash}] speed 2 4 true
+
+
+========================================
+SHOP: FLAME TRAIL
+========================================
+
+BUY BUTTON COMMAND:
+
+tag @p add flame
+
+BLOCK TYPE: Repeating
+SETTING: Always Active
+
+execute at @a[tag=flame] run particle minecraft:basic_flame_particle ~ ~ ~
+
+
+========================================
+SHOP: HEART TRAIL
+========================================
+
+BUY BUTTON COMMAND:
+
+tag @p add heart
+
+BLOCK TYPE: Repeating
+SETTING: Always Active
+
+execute at @a[tag=heart] run particle minecraft:heart_particle ~ ~1 ~
+
+
+========================================
+SHOP: KILL LIGHTNING EFFECT
+========================================
+
+BLOCK 1
+TYPE: Repeating
+SETTING: Always Active
+
+execute as @a[scores={kills=1..}] at @s run summon lightning_bolt
+
+BLOCK 2
+TYPE: Chain
+SETTING: Always Active
+
+scoreboard players set @a kills 0
+
+
+========================================
+SHOP: MYSTERY CRATE
+========================================
+
+CRATE BUTTON COMMAND:
+
+scoreboard players random @p random 1 5
+
+
+CHAIN 1:
+
+execute @p[scores={random=1}] ~~~ give @p diamond 3
+
+CHAIN 2:
+
+execute @p[scores={random=2}] ~~~ give @p totem_of_undying 1
+
+CHAIN 3:
+
+execute @p[scores={random=3}] ~~~ scoreboard players add @p money 300
+
+CHAIN 4:
+
+execute @p[scores={random=4}] ~~~ give @p diamond_sword
+
+CHAIN 5:
+
+execute @p[scores={random=5}] ~~~ tellraw @p {"rawtext":[{"text":"Unlucky lol"}]}
+
+FINAL CHAIN (RESET):
+
+scoreboard players set @p random 0
+
+
+========================================
+SHOP: SIMPLE MONEY CHECK EXAMPLE
+ITEM COST: 300
+========================================
+
+BUTTON BLOCK:
+
+execute @p[scores={money=300..}] ~~~ give @p totem_of_undying 1
+
+CHAIN BLOCK:
+
+execute @p[scores={money=300..}] ~~~ scoreboard players remove @p money 300
+
+
+========================================
+END OF FILE
+========================================
