@@ -1,25 +1,19 @@
 ========================================================
-VEIN-MINER 420 ALL-IN-ONE PACK
-Minecraft Bedrock (Xbox)
-Cheats Required
+VEIN-MINER 420 (XBOX BEDROCK WORKING VERSION)
+NO NBT. NO DISPLAY TAG.
 ========================================================
 
-
-=============================
+========================
 STEP 1 — GET THE PICKAXE
-=============================
+========================
 
-Run this in chat:
-
-/give @p diamond_pickaxe 1 0 {"display":{"Name":"§r§l§5Vein-Miner 420"}}
+/give @p diamond_pickaxe 1 0 {"minecraft:custom_name":"Vein-Miner 420"}
 
 
 
 ========================================================
 OPTION 1 — 3x3 FLAT MINER
 ========================================================
-Breaks a 3x3 flat square centered at your level.
-
 Place ONE repeating command block:
 - Repeating
 - Always Active
@@ -27,15 +21,13 @@ Place ONE repeating command block:
 
 Command:
 
-/execute as @a[hasitem={item=diamond_pickaxe,location=slot.weapon.mainhand,name="§r§l§5Vein-Miner 420"}] at @s run fill ~1 ~ ~1 ~-1 ~ ~-1 air destroy
+/execute as @a[hasitem={item=diamond_pickaxe,location=slot.weapon.mainhand,name="Vein-Miner 420"}] at @s run fill ~1 ~ ~1 ~-1 ~ ~-1 air destroy
 
 
 
 ========================================================
-OPTION 2 — 3x3 TUNNEL WALL MINER
+OPTION 2 — 3x3 WALL / TUNNEL MINER
 ========================================================
-Breaks a 3x3 vertical wall 1 block in front of you.
-
 Place ONE repeating command block:
 - Repeating
 - Always Active
@@ -43,40 +35,33 @@ Place ONE repeating command block:
 
 Command:
 
-/execute as @a[hasitem={item=diamond_pickaxe,location=slot.weapon.mainhand,name="§r§l§5Vein-Miner 420"}] at @s positioned ^ ^ ^1 run fill ^1 ^1 ^0 ^-1 ^-1 ^0 air destroy
+/execute as @a[hasitem={item=diamond_pickaxe,location=slot.weapon.mainhand,name="Vein-Miner 420"}] at @s positioned ^ ^ ^1 run fill ^1 ^1 ^0 ^-1 ^-1 ^0 air destroy
 
 
 
 ========================================================
 OPTION 3 — FAKE ORE VEIN MINER (IRON DEFAULT)
 ========================================================
-Deletes nearby iron ore in a 9x9 cube.
-
-Place ONE repeating command block:
+Place TWO repeating command blocks:
 - Repeating
 - Always Active
 - Unconditional
 
-Commands (PUT BOTH IN SEPARATE COMMAND BLOCKS):
+Command Block 1:
 
-/execute as @a[hasitem={item=diamond_pickaxe,location=slot.weapon.mainhand,name="§r§l§5Vein-Miner 420"}] at @s run fill ~4 ~4 ~4 ~-4 ~-4 ~-4 air destroy replace iron_ore
+/execute as @a[hasitem={item=diamond_pickaxe,location=slot.weapon.mainhand,name="Vein-Miner 420"}] at @s run fill ~4 ~4 ~4 ~-4 ~-4 ~-4 air destroy replace iron_ore
 
-/execute as @a[hasitem={item=diamond_pickaxe,location=slot.weapon.mainhand,name="§r§l§5Vein-Miner 420"}] at @s run fill ~4 ~4 ~4 ~-4 ~-4 ~-4 air destroy replace deepslate_iron_ore
+Command Block 2:
 
+/execute as @a[hasitem={item=diamond_pickaxe,location=slot.weapon.mainhand,name="Vein-Miner 420"}] at @s run fill ~4 ~4 ~4 ~-4 ~-4 ~-4 air destroy replace deepslate_iron_ore
 
-To add more ores, duplicate the command and change:
-iron_ore → diamond_ore
-iron_ore → gold_ore
-iron_ore → coal_ore
-iron_ore → redstone_ore
-etc.
 
 
 ========================================================
-IMPORTANT NOTES
+IMPORTANT
 ========================================================
-• Only use ONE option at a time unless you want chaos.
-• Repeating command blocks must be Always Active.
-• This works anytime you are HOLDING the pickaxe.
-• No true connected vein detection (Bedrock limitation).
+• Only enable ONE option at a time unless you want madness.
+• Repeating must be Always Active.
+• Works when holding the pickaxe.
+• This is Bedrock-safe syntax for Xbox.
 ========================================================
