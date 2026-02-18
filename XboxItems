@@ -65,3 +65,51 @@ IMPORTANT
 • Works when holding the pickaxe.
 • This is Bedrock-safe syntax for Xbox.
 ========================================================
+
+
+========================================================
+VEIN-MINER 420 (COOL CUSTOM VERSION - XBOX BEDROCK)
+========================================================
+
+STEP 1 — GIVE THE CUSTOM PICKAXE:
+
+/give @p diamond_pickaxe 1 0 {
+"minecraft:custom_name":"§r§l§5Vein-Miner 420",
+"minecraft:lore":[
+"§7Have you ever felt like you",
+"§7don't mine enough?",
+"§8",
+"§dWelcome to the §53x3 Vein-Miner 420§d.",
+"§5Break the world faster."
+],
+"minecraft:enchantments":{
+"levels":{
+"efficiency":5,
+"unbreaking":3,
+"mending":1
+}
+},
+"minecraft:unbreakable":{}
+}
+
+
+
+========================================================
+STEP 2 — 3x3 FLAT BREAKER
+========================================================
+
+Place ONE repeating command block:
+- Repeating
+- Always Active
+- Unconditional
+
+Command:
+
+/execute as @a[hasitem={item=diamond_pickaxe,location=slot.weapon.mainhand,name="§r§l§5Vein-Miner 420"}] at @s run fill ~1 ~ ~1 ~-1 ~ ~-1 air destroy
+
+
+
+========================================================
+DONE.
+========================================================
+
